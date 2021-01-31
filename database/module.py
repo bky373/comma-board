@@ -1,6 +1,6 @@
 import pymysql
 
-import secrets
+from . import secrets
 
 
 class Database():

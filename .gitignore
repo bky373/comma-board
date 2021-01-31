@@ -399,5 +399,7 @@ modules.xml
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+__pycache__
+secrets.py
 
 # End of https://www.toptal.com/developers/gitignore/api/venv,intellij+all,intellij+iml,intellij,pycharm,pycharm+all,pycharm+iml

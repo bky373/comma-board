@@ -5,6 +5,7 @@ from flask_restful import Api
 def create_app(test_config=None):
     app = Flask(__name__)
     api = Api(app)
+
     # TODO: config 설정
 
     from .database import db
@@ -18,6 +19,10 @@ def create_app(test_config=None):
     from .board import board_bp, Board
     app.register_blueprint(board_bp)
 
+    from .board_article import board_article_bp, BoardArticle
+    app.register_blueprint(board_article_bp)
+
     api.add_resource(Board, '/boards')
+    api.add_resource(BoardArticle, '/boards/<board_id>', '/boards/<board_id>/<board_article_id>')
 
     return app

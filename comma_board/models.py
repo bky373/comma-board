@@ -5,7 +5,7 @@ from comma_board import db
 
 class Board(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64), nullable = False)
+    name = db.Column(db.String(64), unique = True, nullable = False)
     date_created = db.Column(db.DateTime, nullable = False, default = datetime.now)
 
     @property
@@ -33,4 +33,19 @@ class BoardArticle(db.Model):
             'content': self.content,
             'board_id': self.board_id,
             'date_created': self.date_created
+        }
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    fullname = db.Column(db.String(32), nullable = False)
+    email = db.Column(db.String(64), unique = True, nullable = False)
+    password = db.Column(db.String(128), nullable = False)
+
+    @property
+    def serialized(self):
+        return {
+            'id': self.id,
+            'fullname': self.fullname,
+            'email': self.email
         }

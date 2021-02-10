@@ -19,8 +19,9 @@ def create_app():
 
     from . import models
 
-    from .views import main
+    from .views import main, auth
     app.register_blueprint(main.bp)
+    app.register_blueprint(auth.bp)
 
     from .views.board import BoardResource
     from .views.board_article import BoardArticleResource

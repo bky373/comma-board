@@ -397,9 +397,9 @@ modules.xml
 [Ll]ocal
 [Ss]cripts
 pyvenv.cfg
-.venv
+venv
 pip-selfcheck.json
 __pycache__
-database/secrets.py
-
+mysecrets.py
+migrations
 # End of https://www.toptal.com/developers/gitignore/api/venv,intellij+all,intellij+iml,intellij,pycharm,pycharm+all,pycharm+iml

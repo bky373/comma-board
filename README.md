@@ -25,9 +25,9 @@
 
 - DB에 접속하기 위해 <u>설정파일</u>(`config.py`)의 `DB_URL 정보`를 `자신의 DB 정보`로 대체한다
 
-- ```python
-  # comma_board/config.py
-  # user, pw, host, port, db 모두 자신의 DB 정보로 대체한다 
+- ```bash
+  // comma_board/config.py
+  // user, pw, host, port, db 모두 자신의 DB 정보로 대체한다 
   
   DB_URL = 'mysql+pymysql://{user}:{pw}@{host}:{port}/{db}?charset=utf8'.format(
       user = mysecrets.dbuser,

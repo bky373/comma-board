@@ -9,10 +9,9 @@ parser.add_argument('id')
 parser.add_argument('name')
 
 
-class BoardList(Resource):
+class BoardResource(Resource):
     def get(self):
-        boards = Board.query.all()
-        return jsonify(status = 200, result = [b.serialized for b in boards])
+        return jsonify(status = 200, result = [b.serialized for b in Board.query.all()])
 
     def post(self):
         args = parser.parse_args()

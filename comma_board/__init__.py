@@ -22,7 +22,7 @@ def create_app():
     from .views import main
     app.register_blueprint(main.bp)
 
-    from .views.board import BoardList
-    api.add_resource(BoardList, '/boards')
+    from .views.board import BoardResource
+    api.add_resource(BoardResource, '/boards')
 
     return app

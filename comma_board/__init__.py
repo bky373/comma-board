@@ -23,6 +23,8 @@ def create_app():
     app.register_blueprint(main.bp)
 
     from .views.board import BoardResource
+    from .views.board_article import BoardArticleResource
     api.add_resource(BoardResource, '/boards')
+    api.add_resource(BoardArticleResource, '/boards/<int:board_id>', '/boards/<int:board_id>/<int:board_article_id>')
 
     return app

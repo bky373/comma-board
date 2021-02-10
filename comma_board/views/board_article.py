@@ -8,6 +8,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('title')
 parser.add_argument('content')
 parser.add_argument('board_id')
+parser.add_argument('user_id')
 
 
 class BoardArticleResource(Resource):  # TODO 클래스명이 모델명과 겹치는 데 어떻게 작명해야 할지..
@@ -28,12 +29,13 @@ class BoardArticleResource(Resource):  # TODO 클래스명이 모델명과 겹�
         args = parser.parse_args()
         _title = args.title
         _content = args.content
+        _user_id = args.user_id  # TODO g.user로 변경하기
 
         if not _title or not _content:
             abort(400, description = "제목 또는 내용이 비어있을 수 없습니다")
 
         board = Board.query.filter_by(id = board_id).first()
-        article = BoardArticle(title = _title, content = _content)
+        article = BoardArticle(title = _title, content = _content, user_id = _user_id)
         board.article_set.append(article)  # board의 article_set에 현재 article을 더해줌
         db.session.commit()
         return jsonify(status = 200, result = article.serialized)

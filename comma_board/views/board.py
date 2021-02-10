@@ -7,6 +7,7 @@ from comma_board.models import Board
 parser = reqparse.RequestParser()
 parser.add_argument('id')
 parser.add_argument('name')
+parser.add_argument('user_id')
 
 
 class BoardResource(Resource):
@@ -16,13 +17,14 @@ class BoardResource(Resource):
     def post(self):
         args = parser.parse_args()
         _name = args.name
+        _user_id = args.user_id  # TODO g.user로 변경하기
 
         if not _name:
             abort(400, description = '게시판 이름이 비어있을 수 없습니다')
         elif Board.query.filter_by(name = _name).first():
             abort(400, description = '이미 같은 이름의 게시판이 존재합니다')
 
-        board = Board(name = _name)
+        board = Board(name = _name, user_id = _user_id)
         db.session.add(board)
         db.session.commit()
         return jsonify(status = 200, result = board.serialized)

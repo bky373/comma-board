@@ -25,7 +25,9 @@ def create_app():
 
     from .views.board import BoardResource
     from .views.board_article import BoardArticleResource
+    from .views.dashboard import DashboardResource
     api.add_resource(BoardResource, '/boards')
     api.add_resource(BoardArticleResource, '/boards/<int:board_id>', '/boards/<int:board_id>/<int:board_article_id>')
+    api.add_resource(DashboardResource, '/dashboard', '/dashboard/<int:volume>')
 
     return app

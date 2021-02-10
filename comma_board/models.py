@@ -9,7 +9,7 @@ class Board(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete = 'CASCADE'), nullable = False)
     user = db.relationship('User', backref = db.backref('board_set'))
     date_created = db.Column(db.DateTime, nullable = False, default = datetime.now)
-    date_modified = db.Column(db.DateTime, nullable = False, default = datetime.now) # TODO 수정 기능 만들기
+    date_modified = db.Column(db.DateTime, nullable = False, default = datetime.now)  # TODO 수정 기능 만들기
 
     @property
     def serialized(self):
@@ -31,7 +31,7 @@ class BoardArticle(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete = 'CASCADE'), nullable = False)
     user = db.relationship('User', backref = db.backref('article_set'))
     date_created = db.Column(db.DateTime, nullable = False, default = datetime.now)
-    date_modified = db.Column(db.DateTime, nullable = False, default = datetime.now) # TODO 수정 기능 만들기
+    date_modified = db.Column(db.DateTime, nullable = False, default = datetime.now)  # TODO 수정 기능 만들기
 
     @property
     def serialized(self):

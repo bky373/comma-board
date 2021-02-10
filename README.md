@@ -1,22 +1,24 @@
 # ❛ Comma ❜ Board 소개
 
-- **❛ Comma ❜**는 💻**Computer** **Engineering/Science**와 📐**Mathematics**의 합성어로, <u>컴퓨터 관련 지식과 수학</u>을 공부하는 사람들이(전공자가 아니더라도) 서로 정보를 공유할 수 있도록 만든 게시판입니다.
+- **❛ Comma ❜**는 💻**Computer** **Engineering/Science**와 📐**Mathematics**의 합성어로, <u>컴퓨터 관련 지식과 수학</u>을 공부하는 사람들이(전공자가 아니더라도) *쉬어가면서* 서로 정보를 공유할 수 있도록 만든 게시판입니다.
 - 앞으로 어떻게 구현해나갈지는 아직 막막하지만.. 공부해가면서 부족한 부분들을 채워볼(?) 예정입니다.
 - 우선, 웹 백엔드 과제 내용에 해당하는 API 구현은 모두 마쳤습니다. (중간에 수정사항이 있을지 모르지만.. 코드리뷰 해주시면 감사하겠습니다.)
+
+---
 
 ### 개발 환경 준비
 
 #### 1. 가상 환경 준비 ([참고](https://docs.python.org/ko/3/tutorial/venv.html))
 
-- 아래 내용을 시작하기 전에, 터미널에서 (`clone or download`한) `comma_board` 디렉토리로 이동한다
+- 터미널에서 `comma_board` 디렉토리로 이동한다 ( `git clone` 또는 `download` 이후)
 
 - ```bash
-  # 터미널에서 아래 명령어를 수행한다
+  // 터미널에서 아래 명령어를 수행한다
   
-  python -m venv venv  # 가상 환경 생성
-  source [각자의 경로/comma_board]/venv/Scripts/activate  # 가상 환경 활성화
+  python -m venv venv  // 가상 환경 생성
+  source [각자의 경로/comma_board]/venv/Scripts/activate  // 가상 환경 활성화
   (또는 cd [각자의 경로/comma_board]/venv/Scripts 입력 후 activate 입력)
-  python -m pip install -r requirements.txt  # 필요한 모듈 설치
+  python -m pip install -r requirements.txt  // 필요한 모듈 설치
   ```
 
 #### 2. 데이터베이스 접속 준비
@@ -37,38 +39,37 @@
   
   """
   추후 문제 없이 SQLAlchemy를 사용하려면 
-  접속하려는 MySQL 서버에, 해당 이름의 db가 있어야 한다! 
-  없다면, 터미널 또는 Workbench를 통해 db를 생성해준다
-  (접속 및 생성 과정은 우선 이곳을 참조
+  접속하려는 MySQL 서버에, 해당 이름의 db가 있어야 한다
+  db가 없다면, 터미널 또는 Workbench를 통해 db를 생성해준다
+  (db 접속 및 생성 과정은 이곳을 참조한다
   	-> https://dev.mysql.com/doc/refman/8.0/en/connecting-disconnecting.html)
   """
   ```
 
 #### 3. 데이터베이스 초기화
 
-- ```python
-  flask db init  # 데이터베이스를 관리하는 초기 파일들이 담긴 migrations 디렉토리 생성
-  flask db migrate  # 데이터베이스 모델 테이블 생성 및 변경(사실은 revision 파일이 생성됨)
-  flask db upgrade  # 데이터베이스 갱신(위에서 생성된 revision 파일이 실행됨)
+- ```bash
+  flask db init  // 데이터베이스를 관리하는 초기 파일들이 담긴 migrations 디렉토리 생성
+  flask db migrate  // 데이터베이스 모델 테이블 생성 및 변경(사실은 revision 파일이 생성됨)
+  flask db upgrade  // 데이터베이스 갱신(위에서 생성된 revision 파일이 실행됨)
   ```
 
 #### 4. 애플리케이션 설정 후 실행하기
 
 - ```bash
-  # 다시 터미널에서 
-  # comma_board라는 이름의 최상위 패키지로 이동 후
-  # 아래 명령어를 수행한다
+  // 다시 터미널에서, [comma_board] 라는 이름의 최상위 패키지로 이동한 후
+  // 아래 명령어를 수행한다
   
-  set FLASK_APP=comma_board  # FLASK_APP 환경 변수에 comma_board를 지정
-  set FLASK_ENV=development  # 플라스크 실행 환경을 개발 환경으로 설정
-  flask run  # 앱 실행하기
+  set FLASK_APP=comma_board  // FLASK_APP 환경 변수에 comma_board를 지정
+  set FLASK_ENV=development  // 플라스크 실행 환경을 개발 환경으로 설정
+  flask run  // 앱 실행하기
   ```
 
 <br>
 
 ## API 소개
 
-### User APIs: 
+#### User APIs: 
 
 - 유저 SignUp / Login / Logout
 
@@ -78,9 +79,7 @@
 
 3. **Logout API** : 현재 로그인 된 유저를 로그아웃합니다.
 
-## 
-
-### Board APIs:  
+#### Board APIs:  
 
 - 게시판 CRUD
 
@@ -89,9 +88,7 @@
 3. **Update API** : 기존 게시판의 *name* 을 변경합니다.
 4. **Delete API** : 특정 게시판을 제거합니다.
 
-## 
-
-### BoardArticle APIs:  
+#### BoardArticle APIs:  
 
 - 게시판 글 CRUD
 
@@ -100,13 +97,13 @@
 3. **Update API** : 게시판 글의 *title*, *content*를 변경합니다.
 4. **Delete API** : 특정 게시판 글을 제거합니다.
 
-## 
-
-### Dashboard APIs
+#### Dashboard APIs
 
 1. **RecentBoardArticle API** : 모든 게시판에 대해 각각의 게시판의 가장 최근 *n* 개의 게시판 글의 *title* 을 가져옵니다. (*k* 개의 게시판이 있다면 최대 *k \* n* 개의 게시판 글의 *title* 을 반환합니다.)
 
+---
 
+<br>
 
 ## 참고 자료
 

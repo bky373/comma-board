@@ -8,7 +8,7 @@ class DashboardResource(Resource):
     def get(self, volume=3):
         result = []
         for board in Board.query:
-            articles = board.article_set[:volume]
+            articles = board.article_set[-volume:]
             if len(articles) < 1: continue
 
             articles = sorted(articles, key = lambda a: a.date_created, reverse = True)

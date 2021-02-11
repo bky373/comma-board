@@ -5,18 +5,15 @@ from comma_board.models import Board
 
 
 class DashboardResource(Resource):
-    def get(self, volume=3):
+    def get(self, count=3):
         result = []
         for board in Board.query:
-            articles = board.article_set[-volume:]
+            articles = sorted(board.article_set[-count:], key = lambda x: x.date_created, reverse = True)
             if len(articles) < 1: continue
 
-            articles = sorted(articles, key = lambda a: a.date_created, reverse = True)
-            for a in articles:
-                result.append({
-                    'board_id': board.id,
-                    'board_name': board.name,
-                    'title': a.title,
-                    'date_created': a.date_created
-                })
+            result.append({
+                'board_id': board.id,
+                'board_name': board.name,
+                'titles': list(map(lambda x: { 'title': x.title, 'date_created': x.date_created }, articles))
+            })
         return jsonify(status = "success", result = result)

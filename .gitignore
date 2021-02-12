@@ -402,4 +402,6 @@ pip-selfcheck.json
 __pycache__
 mysecrets.py
 migrations
+curl
+fp.cmd
 # End of https://www.toptal.com/developers/gitignore/api/venv,intellij+all,intellij+iml,intellij,pycharm,pycharm+all,pycharm+iml

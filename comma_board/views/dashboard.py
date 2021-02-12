@@ -1,7 +1,10 @@
-from flask import jsonify
-from flask_restful import Resource
+from flask import jsonify, Blueprint
+from flask_restful import Resource, Api
 
 from comma_board.models import Board
+
+bp = Blueprint('dashboard', __name__)
+api = Api(bp)
 
 
 class DashboardResource(Resource):
@@ -17,3 +20,6 @@ class DashboardResource(Resource):
                 'titles': list(map(lambda x: { 'title': x.title, 'date_created': x.date_created }, articles))
             })
         return jsonify(status = "success", result = result)
+
+
+api.add_resource(DashboardResource, '/dashboard', '/dashboard/<int:count>')

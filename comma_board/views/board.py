@@ -1,8 +1,11 @@
-from flask import jsonify
-from flask_restful import Resource, reqparse, abort
+from flask import jsonify, Blueprint
+from flask_restful import Resource, reqparse, abort, Api
 
 from comma_board import db
 from comma_board.models import Board
+
+bp = Blueprint('board', __name__)
+api = Api(bp)
 
 parser = reqparse.RequestParser()
 parser.add_argument('id')
@@ -65,3 +68,6 @@ class BoardResource(Resource):
         db.session.delete(board)
         db.session.commit()
         return jsonify(status = 200, result = board.serialized)
+
+
+api.add_resource(BoardResource, '/boards')

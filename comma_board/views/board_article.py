@@ -1,8 +1,11 @@
-from flask import jsonify
-from flask_restful import Resource, reqparse, abort
+from flask import jsonify, Blueprint
+from flask_restful import Resource, reqparse, abort, Api
 
 from comma_board import db
 from comma_board.models import Board, BoardArticle
+
+bp = Blueprint('board_article', __name__)
+api = Api(bp)
 
 parser = reqparse.RequestParser()
 parser.add_argument('title')
@@ -83,3 +86,6 @@ class BoardArticleResource(Resource):  # TODO 클래스명이 모델명과 겹�
             db.session.delete(article)
         db.session.commit()
         return jsonify(status = 200, result = { 'deleted': result })
+
+
+api.add_resource(BoardArticleResource, '/boards/<int:board_id>', '/boards/<int:board_id>/<int:board_article_id>')

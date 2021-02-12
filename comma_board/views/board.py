@@ -10,6 +10,17 @@ parser.add_argument('name')
 parser.add_argument('user_id')
 
 
+# TODO Marshmallow나 WTForm 찾아보기
+def abort_if_empty_input(value):
+    if not value:
+        abort(400, descritpion = '입력칸이 비어있을 수 없습니다')
+
+
+def abort_if_name_already_exists(model, name):
+    if model.query.filter_by(name = name).first():
+        abort(400, descritpion = '이미 같은 이름이 존재합니다')
+
+
 class BoardResource(Resource):
     def get(self):
         return jsonify(status = 200, result = [b.serialized for b in Board.query.all()])
@@ -19,10 +30,8 @@ class BoardResource(Resource):
         _name = args.name
         _user_id = args.user_id  # TODO g.user로 변경하기
 
-        if not _name:
-            abort(400, description = '게시판 이름이 비어있을 수 없습니다')
-        elif Board.query.filter_by(name = _name).first():
-            abort(400, description = '이미 같은 이름의 게시판이 존재합니다')
+        abort_if_empty_input(_name)
+        abort_if_name_already_exists(Board, _name)
 
         board = Board(name = _name, user_id = _user_id)
         db.session.add(board)
@@ -34,10 +43,8 @@ class BoardResource(Resource):
         _id = args.id
         _name = args.name
 
-        if not _name:
-            abort(400, description = '게시판 이름이 비어있을 수 없습니다')
-        elif Board.query.filter_by(name = _name).first():
-            abort(400, description = '이미 같은 이름의 게시판이 존재합니다')
+        abort_if_empty_input(_name)
+        abort_if_name_already_exists(Board, _name)
 
         board = Board.query.filter_by(id = _id).first()
         if not board:

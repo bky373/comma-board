@@ -11,6 +11,12 @@ parser.add_argument('board_id')
 parser.add_argument('user_id')
 
 
+# TODO Marshmallow나 WTForm 찾아보기
+def abort_if_empty_input(value):
+    if not value:
+        abort(400, descritpion = '입력칸이 비어있을 수 없습니다')
+
+
 class BoardArticleResource(Resource):  # TODO 클래스명이 모델명과 겹치는 데 어떻게 작명해야 할지..
     def get(self, board_id=None, board_article_id=None):
         if not board_article_id:
@@ -31,8 +37,8 @@ class BoardArticleResource(Resource):  # TODO 클래스명이 모델명과 겹�
         _content = args.content
         _user_id = args.user_id  # TODO g.user로 변경하기
 
-        if not _title or not _content:
-            abort(400, description = "제목 또는 내용이 비어있을 수 없습니다")
+        abort_if_empty_input(_title)
+        abort_if_empty_input(_content)
 
         board = Board.query.filter_by(id = board_id).first()
         article = BoardArticle(title = _title, content = _content, user_id = _user_id)
@@ -46,8 +52,8 @@ class BoardArticleResource(Resource):  # TODO 클래스명이 모델명과 겹�
         _content = args.content
         _board_id = args.board_id
 
-        if not _title or not _content:
-            abort(400, description = "제목 또는 내용이 비어있을 수 없습니다")
+        abort_if_empty_input(_title)
+        abort_if_empty_input(_content)
 
         if not board_article_id:
             abort(400, description = "해당하는 게시물이 없습니다")
@@ -58,7 +64,7 @@ class BoardArticleResource(Resource):  # TODO 클래스명이 모델명과 겹�
 
         article.title = _title
         article.content = _content
-        article.board_id = _board_id
+        article.board_id = board_id
         db.session.commit()
         return jsonify(status = 200, result = article.serialized)
 

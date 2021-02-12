@@ -19,6 +19,7 @@ def create_app():
 
     from . import models
 
+    # TODO blueprint, api 정리
     from .views import main, auth
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
@@ -28,6 +29,6 @@ def create_app():
     from .views.dashboard import DashboardResource
     api.add_resource(BoardResource, '/boards')
     api.add_resource(BoardArticleResource, '/boards/<int:board_id>', '/boards/<int:board_id>/<int:board_article_id>')
-    api.add_resource(DashboardResource, '/dashboard', '/dashboard/<int:volume>')
+    api.add_resource(DashboardResource, '/dashboard', '/dashboard/<int:count>')
 
     return app

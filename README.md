@@ -1,6 +1,6 @@
 # ❛ Comma ❜ Board 소개
 
-- **❛ Comma ❜**는 💻**Computer** **Engineering/Science**와 📐**Mathematics**의 합성어로, <u>컴퓨터 관련 지식과 수학</u>을 공부하는 사람들이(전공자가 아니더라도) *쉬어가면서* 서로 정보를 공유할 수 있도록 만든 게시판입니다.
+- **❛ Comma ❜**는 💻**Computer** **Engineering/Science**와 📐**Mathematics**의 합성어로, <u>컴퓨터 관련 지식과 수학</u>을 공부하는 사람들이 (전공자가 아니더라도)  *쉬어가면서* (,)  서로 정보를 공유할 수 있도록 만든 게시판입니다.
 - 앞으로 어떻게 구현해나갈지는 아직 막막하지만.. 공부해가면서 부족한 부분들을 채워볼(?) 예정입니다.
 - 우선, 웹 백엔드 과제 내용에 해당하는 API 구현은 모두 마쳤습니다. (중간에 수정사항이 있을지 모르지만.. 코드리뷰 해주시면 감사하겠습니다.)
 
@@ -42,7 +42,7 @@
   접속하려는 MySQL 서버에, 해당 이름의 db가 있어야 한다
   db가 없다면, 터미널 또는 Workbench를 통해 db를 생성해준다
   (db 접속 및 생성 과정은 이곳을 참조한다
-  	-> https://dev.mysql.com/doc/refman/8.0/en/connecting-disconnecting.html)
+   -> https://dev.mysql.com/doc/refman/8.0/en/connecting-disconnecting.html)
   """
   ```
 
@@ -75,31 +75,308 @@
 
 1. **SignUp API** : *fullname*, *email*, *password* 을 입력받아 새로운 유저를 가입시킵니다.
 
+   ```sh
+   $ curl http://localhost:5000/auth/signup -H "Content-Type: application/json" -d "{""fullname"":""test"", ""em
+   ail"":""test@test.com"", ""password"":""test""}" -X POST
+   {
+     "result": {
+       "date_joined": "Fri, 12 Feb 2021 13:44:42 GMT",
+       "email": "test@test.com",
+       "fullname": "test",
+       "id": 4
+     },
+     "status": "success"
+   }
+   ```
+
+   
+
 2. **Login API** : *email*, *password* 를 입력받아 특정 유저로 로그인합니다.
 
+   ```sh
+   $ curl http://localhost:5000/auth/login -H "Content-Type: application/json" -d "{""email"":""test@test.com"",
+    ""password"":""test""}" -X POST
+   {
+     "result": {
+       "date_joined": "Fri, 12 Feb 2021 13:44:42 GMT",
+       "email": "test@test.com",
+       "fullname": "test",
+       "id": 4
+     },
+     "status": "success"
+   }
+   ```
+
+   
+
 3. **Logout API** : 현재 로그인 된 유저를 로그아웃합니다.
+
+   ```sh
+   $ http://localhost:5000/auth/logout
+   {
+     "msg": "logout success",
+     "status": "success"
+   }
+   ```
+
+   
 
 #### Board APIs:  
 
 - 게시판 CRUD
 
 1. **Create API** : *name* 을 입력받아 새로운 게시판을 만듭니다.
+
+   ```sh
+   $ curl http://localhost:5000/boards -d name=board1 -d user_id=1 -X POST
+   {
+     "result": {
+       "date_created": "Fri, 12 Feb 2021 13:17:19 GMT",
+       "date_modified": "Fri, 12 Feb 2021 13:17:19 GMT",
+       "id": 6,
+       "name": "board1",
+       "user_id": 1
+     },
+     "status": 200
+   }
+   
+   
+   ```
+
+   
+
 2. **Read API** : 현재 등록된 게시판 목록을 가져옵니다.
+
+   ```sh
+   $ curl http://localhost:5000/boards
+   {
+     "result": [
+       {
+         "date_created": "Fri, 12 Feb 2021 13:17:19 GMT",
+         "date_modified": "Fri, 12 Feb 2021 13:17:19 GMT",
+         "id": 6,
+         "name": "board1",
+         "user_id": 1
+       }
+     ],
+     "status": 200
+   }
+   
+   ```
+
+   
+
 3. **Update API** : 기존 게시판의 *name* 을 변경합니다.
+
+   ```bash
+   $ curl http://localhost:5000/boards -d name=board2 -d id=6 -X PUT
+   {
+     "result": {
+       "date_created": "Fri, 12 Feb 2021 13:17:19 GMT",
+       "date_modified": "Fri, 12 Feb 2021 13:17:19 GMT", // 수정 기능 추후 보완 예정..
+       "id": 6,
+       "name": "board2", // board1에서 board2로 변경
+       "user_id": 1
+     },
+     "status": 200
+   }
+   ```
+
+   
+
 4. **Delete API** : 특정 게시판을 제거합니다.
+
+   ```sh
+   $ curl http://localhost:5000/boards -d id=6 -X DELETE
+   {
+     "result": {
+       "date_created": "Fri, 12 Feb 2021 13:17:19 GMT",
+       "date_modified": "Fri, 12 Feb 2021 13:17:19 GMT",
+       "id": 6,
+       "name": "board2",
+       "user_id": 1
+     },
+     "status": 200
+   }
+   
+   $ curl http://localhost:5000/boards
+   {
+     "result": [],
+     "status": 200
+   }
+   ```
+
+   
 
 #### BoardArticle APIs:  
 
 - 게시판 글 CRUD
 
 1. **Create API** : *title*, *content* 를 입력받아 특정 게시판에 새로운 글을 작성합니다.
+
+   ```sh
+   $ curl http://localhost:5000/boards/7 -d title=title1 -d content=content1 -d user_id=1 -X POST
+   {
+     "result": {
+       "board_id": 7,
+       "content": "content1",
+       "date_created": "Fri, 12 Feb 2021 13:29:13 GMT",
+       "date_modified": "Fri, 12 Feb 2021 13:29:13 GMT",
+       "id": 17,
+       "title": "title1",
+       "user_id": 1
+     },
+     "status": 200
+   }
+   ```
+
+   
+
 2. **Read API** : 게시판의 글 목록을 가져오거나, 특정 게시판 글의 내용을 가져옵니다.
+
+   ```sh
+   $ curl http://localhost:5000/boards/7  => 나중에 Board API로 옮기기
+   {
+     "result": [
+       {
+         "board_id": 7,
+         "content": "content1",
+         "date_created": "Fri, 12 Feb 2021 13:29:13 GMT",
+         "date_modified": "Fri, 12 Feb 2021 13:29:13 GMT",
+         "id": 17,
+         "title": "title1",
+         "user_id": 1
+       },
+       {
+         "board_id": 7,
+         "content": "content1",
+         "date_created": "Fri, 12 Feb 2021 13:30:02 GMT",
+         "date_modified": "Fri, 12 Feb 2021 13:30:02 GMT",
+         "id": 18,
+         "title": "title1",
+         "user_id": 1
+       }
+     ],
+     "status": 200
+   }
+   
+   
+   $ curl http://localhost:5000/boards/7/17
+   {
+     "result": {
+       "board_id": 7,
+       "content": "content1",
+       "date_created": "Fri, 12 Feb 2021 13:29:13 GMT",
+       "date_modified": "Fri, 12 Feb 2021 13:29:13 GMT",
+       "id": 17,
+       "title": "title1",
+       "user_id": 1
+     },
+     "status": 200
+   }
+   ```
+
+   
+
 3. **Update API** : 게시판 글의 *title*, *content*를 변경합니다.
+
+   ```sh
+   $ curl http://localhost:5000/boards/7/17 -d title="updated title1" -d content="updated content1" -d user_id=1
+    -X PUT
+   {
+     "result": {
+       "board_id": null,
+       "content": "updated content1",
+       "date_created": "Fri, 12 Feb 2021 13:29:13 GMT",
+       "date_modified": "Fri, 12 Feb 2021 13:29:13 GMT",
+       "id": 17,
+       "title": "updated title1",
+       "user_id": 1
+     },
+     "status": 200
+   }
+   ```
+
+   
+
 4. **Delete API** : 특정 게시판 글을 제거합니다.
+
+   ```sh
+   $ curl http://localhost:5000/boards/7/18 -X DELETE
+   {
+     "result": {
+       "deleted": {
+         "board_id": 7,
+         "content": "content1",
+         "date_created": "Fri, 12 Feb 2021 13:30:02 GMT",
+         "date_modified": "Fri, 12 Feb 2021 13:30:02 GMT",
+         "id": 18,
+         "title": "title1",
+         "user_id": 1
+       }
+     },
+     "status": 200
+   }
+   ```
+
+   
 
 #### Dashboard APIs
 
 1. **RecentBoardArticle API** : 모든 게시판에 대해 각각의 게시판의 가장 최근 *n* 개의 게시판 글의 *title* 을 가져옵니다. (*k* 개의 게시판이 있다면 최대 *k \* n* 개의 게시판 글의 *title* 을 반환합니다.)
+
+   ```sh
+   $ curl http://localhost:5000/dashboard/2
+   {
+     "result": [
+       {
+         "board_id": 7,
+         "board_name": "board1",
+         "titles": [
+           {
+             "date_created": "Fri, 12 Feb 2021 13:30:05 GMT",
+             "title": "title1"
+           },
+           {
+             "date_created": "Fri, 12 Feb 2021 13:30:04 GMT",
+             "title": "title1"
+           }
+         ]
+       },
+       {
+         "board_id": 8,
+         "board_name": "board2",
+         "titles": [
+           {
+             "date_created": "Fri, 12 Feb 2021 13:30:21 GMT",
+             "title": "title2"
+           },
+           {
+             "date_created": "Fri, 12 Feb 2021 13:30:20 GMT",
+             "title": "title2"
+           }
+         ]
+       },
+       {
+         "board_id": 9,
+         "board_name": "board3",
+         "titles": [
+           {
+             "date_created": "Fri, 12 Feb 2021 13:30:37 GMT",
+             "title": "title3"
+           },
+           {
+             "date_created": "Fri, 12 Feb 2021 13:30:35 GMT",
+             "title": "title3"
+           }
+         ]
+       }
+     ],
+     "status": "success"
+   }
+   ```
+
+   
 
 ---
 
@@ -107,9 +384,9 @@
 
 ## 참고 자료
 
-- [SQLAlchemy 모델 serialize하는 간단한 방법](https://www.kite.com/blog/python/flask-restful-api-tutorial/) 
-- [API 에러를 JSON으로 반환하는 방법](https://flask.palletsprojects.com/en/1.1.x/patterns/errorpages/#returning-api-errors-as-json)
 - [Flask Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/)
 - [Jump To Flask](https://wikidocs.net/book/4542)
+- [SQLAlchemy 모델 serialize하는 간단한 방법](https://www.kite.com/blog/python/flask-restful-api-tutorial/) 
+- [API 에러를 JSON으로 반환하는 방법](https://flask.palletsprojects.com/en/1.1.x/patterns/errorpages/#returning-api-errors-as-json)
 - [Flask-SQLAlchemy 사용시 json으로 데이터 가공하기](https://blog.naver.com/PostView.nhn?blogId=varkiry05&logNo=221485216965&categoryNo=107&parentCategoryNo=0&viewDate=&currentPage=1&postListTopCurrentPage=1&from=search) (이 프로젝트에서는 사용 안 함)
 - [SQLAlchemy Query를 Pandas DataFrame로 만들기](https://beomi.github.io/2017/10/21/SQLAlchemy-Query-to-Pandas-DataFrame/) (이 프로젝트에서는 사용 안 함)

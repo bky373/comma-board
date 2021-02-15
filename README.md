@@ -1,8 +1,14 @@
+# 먼저
+
+- 웹 백엔드 과제 내용에 해당하는 API 구현을 모두 마쳤습니다. 
+- // TODO 주석에 수정사항들을 기록하고 중간중간 코드 수정이 있지만 부족한 부분이 보이면 언제든지 코드리뷰 부탁드립니다ㅎㅎ :)
+- csrf token을 사용하면서 포스트맨을 활용하기가 어려워졌습니다(제 기준입니다)
+  - csrf token을 사용하면서 포스트맨을 어떻게 활용해야하는지 방법을 알려주시면 감사하겠습니다
+
 # ❛ Comma ❜ Board 소개
 
 - **❛ Comma ❜**는 💻**Computer** **Engineering/Science**와 📐**Mathematics**의 합성어로, <u>컴퓨터 관련 지식과 수학</u>을 공부하는 사람들이 (전공자가 아니더라도)  *쉬어가면서* (,)  서로 정보를 공유할 수 있도록 만든 게시판입니다.
 - 앞으로 어떻게 구현해나갈지는 아직 막막하지만.. 공부해가면서 부족한 부분들을 채워볼(?) 예정입니다.
-- 우선, 웹 백엔드 과제 내용에 해당하는 API 구현은 모두 마쳤습니다. (중간에 수정사항이 있을지 모르지만.. 코드리뷰 해주시면 감사하겠습니다.)
 
 ---
 
@@ -18,7 +24,7 @@
   python -m venv venv  // 가상 환경 생성
   source [각자의 경로/comma_board]/venv/Scripts/activate  // 가상 환경 활성화
   (또는 cd [각자의 경로/comma_board]/venv/Scripts 입력 후 activate 입력)
-  python -m pip install -r requirements.txt  // 필요한 모듈 설치
+  pip install -r requirements.txt  // 필요한 패키지 설치
   ```
 
 #### 2. 데이터베이스 접속 준비
@@ -61,7 +67,6 @@
   // 아래 명령어를 수행한다
   
   set FLASK_APP=comma_board  // FLASK_APP 환경 변수에 comma_board를 지정
-  set FLASK_ENV=development  // 플라스크 실행 환경을 개발 환경으로 설정
   flask run  // 앱 실행하기
   ```
 
@@ -76,8 +81,7 @@
 1. **SignUp API** : *fullname*, *email*, *password* 을 입력받아 새로운 유저를 가입시킵니다.
 
    ```sh
-   $ curl http://localhost:5000/auth/signup -H "Content-Type: application/json" -d "{""fullname"":""test"", ""em
-   ail"":""test@test.com"", ""password"":""test""}" -X POST
+   $ curl http://localhost:5000/auth/signup -H "Content-Type: application/json" -d "{""fullname"":""test"", ""email"":""test@test.com"", ""password"":""test""}" -X POST
    {
      "result": {
        "date_joined": "Fri, 12 Feb 2021 13:44:42 GMT",
@@ -132,7 +136,7 @@
    {
      "result": {
        "date_created": "Fri, 12 Feb 2021 13:17:19 GMT",
-       "date_modified": "Fri, 12 Feb 2021 13:17:19 GMT",
+       "date_modified": "Fri, 12 Feb 2021 13:17:19 GMT", // 수정 기능 추후 보완 예정..
        "id": 6,
        "name": "board1",
        "user_id": 1
@@ -384,8 +388,10 @@
 
 ## 참고 자료
 
+- [Elice 수업 자료](https://kdt.lms.elice.io/)
 - [Flask Tutorial](https://flask.palletsprojects.com/en/1.1.x/tutorial/)
 - [Jump To Flask](https://wikidocs.net/book/4542)
+- [Flask Restful Docs](https://flask-restful.readthedocs.io/en/latest/)
 - [SQLAlchemy 모델 serialize하는 간단한 방법](https://www.kite.com/blog/python/flask-restful-api-tutorial/) 
 - [API 에러를 JSON으로 반환하는 방법](https://flask.palletsprojects.com/en/1.1.x/patterns/errorpages/#returning-api-errors-as-json)
 - [Flask-SQLAlchemy 사용시 json으로 데이터 가공하기](https://blog.naver.com/PostView.nhn?blogId=varkiry05&logNo=221485216965&categoryNo=107&parentCategoryNo=0&viewDate=&currentPage=1&postListTopCurrentPage=1&from=search) (이 프로젝트에서는 사용 안 함)

@@ -26,20 +26,25 @@ def abort_if_name_already_exists(model, name):
 
 class BoardResource(Resource):
     def get(self):
-        return jsonify(status = 200, result = [b.serialized for b in Board.query.all()])
+        return jsonify(
+            status = 200,
+            boards = [b.serialized for b in Board.query.order_by(Board.date_created.desc())]
+        )  # TODO 다른 직렬화 방법 좀더 찾아보기
 
     def post(self):
         args = parser.parse_args()
         _name = args.name
-        _user_id = args.user_id  # TODO g.user로 변경하기
+        _user_id = 1  # TODO g.user로 변경하기
+        # _user_id = args.user_id
 
+        print('000')
         abort_if_empty_input(_name)
         abort_if_name_already_exists(Board, _name)
 
         board = Board(name = _name, user_id = _user_id)
         db.session.add(board)
         db.session.commit()
-        return jsonify(status = 200, result = board.serialized)
+        return jsonify(status = 200, board = board.serialized)
 
     def put(self):
         args = parser.parse_args()

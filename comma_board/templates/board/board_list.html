@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block script %}
+<script type=text/javascript>
+    $(document).ready(function() {
+        $("#boards-box").html("");
+        showBoardList();
+    })
+
+    function toggleOpen() {
+        if ($('#btn-post-box').html() == '<small>닫기</small>') {
+            $('#post-box').hide();
+            $('#btn-post-box').html(`<small>게시판 추가</small>`);
+        } else {
+            $('#post-box').show();
+            $('#btn-post-box').html(`<small>닫기</small>`);
+        }
+    }
+
+    function postBoard() {
+        $.ajax({
+            method      : "POST",
+            url         : "{{ url_for('board.boardresource') }}",
+            headers     : {"X-CSRFToken" : "{{ csrf_token() }}"},
+            contentType : "application/json",
+            data        : JSON.stringify({name : $('#boardName').val()})
+        }).done(function(response) {
+            let board = response.board;
+            makeBoardCard(board.name, board.id);
+            window.location.reload();
+            alert('게시판 등록에 성공하였습니다!');
+        }).fail(function(response) {
+            alert('게시판 등록이 실패했습니다.');
+        });
+    }
+
+    function showBoardList() {
+        $.ajax({
+            method : "GET",
+            url    : "{{ url_for('board.boardresource') }}"
+        }).done(function(response) {
+            let boards = response.boards;
+            boards.forEach(board => makeBoardCard(board.name, board.id));
+        });
+    }
+
+    function makeBoardCard(name, id) {
+        $('#boards-box').append(
+            `<article class="card my-2">
+                <div class="card-body row">
+                    <h2 class="card-title my-auto ml-4"><a href="/boards/${id}">${name}</a></h2>
+                    <div class="ml-auto my-auto mr-4">
+                        <a href="#" class="card-link">수정</a>
+                        <a href="#" class="card-link">삭제</a>
+                    </div>
+                </div>
+            </article>`
+        );
+    }
+</script>
+{% endblock %}
+{% block content %}
+<div>
+    <div class="row">
+        <h1 class="my-3">전체 게시판 목록</h1>
+        <button id="btn-post-box" type="button" class="btn btn-info my-auto ml-auto mr-4" onclick="toggleOpen();">
+            <small>게시판 추가</small>
+        </button>
+    </div>
+</div>
+<div id="post-box" class="row mx-1 my-3 py-4 border border-info rounded-lg shadow-sm " style="display: none">
+    <form method="POST" class="form-inline mx-auto">
+        <div class="form-group">
+            <label for="boardName" class="font-weight-bold mr-sm-3" required>게시판 이름 :</label>
+            <input type="text" class="form-control info mr-sm-3" placeholder="Enter board name" id="boardName">
+        </div>
+        <button type="button" class="btn btn-info btn-sm" onclick="postBoard();">등록</button>
+    </form>
+</div>
+<div id="boards-box"></div>
+{% endblock %}

@@ -26,10 +26,10 @@
             data        : JSON.stringify({name : $('#boardName').val()})
         }).done(function(response) {
             let board = response.board;
-            makeBoardCard(board.name, board.id);
+            makeBoardCard(board.id, board.name);
             window.location.reload();
             alert('게시판 등록에 성공하였습니다!');
-        }).fail(function(response) {
+        }).fail(function() {
             alert('게시판 등록이 실패했습니다.');
         });
     }
@@ -40,22 +40,40 @@
             url    : "{{ url_for('board.boardresource') }}"
         }).done(function(response) {
             let boards = response.boards;
-            boards.forEach(board => makeBoardCard(board.name, board.id));
+            boards.forEach(board => makeBoardCard(board.id, board.name));
+        }).fail(function() {
+            alert('게시판 목록을 가져오는 데 실패하였습니다')
         });
     }
 
-    function makeBoardCard(name, id) {
+    function makeBoardCard(id, name) {
         $('#boards-box').append(
             `<article class="card my-2">
                 <div class="card-body row">
                     <h2 class="card-title my-auto ml-4"><a href="/boards/${id}">${name}</a></h2>
                     <div class="ml-auto my-auto mr-4">
                         <a href="#" class="card-link">수정</a>
-                        <a href="#" class="card-link">삭제</a>
+                        <a href="#" class="card-link" onclick="deleteBoard(${id});">삭제</a>
                     </div>
                 </div>
             </article>`
         );
+    }
+
+    function deleteBoard(_id) {
+        console.log(_id);
+        $.ajax({
+            method      : "DELETE",
+            url         : "{{ url_for('board.boardresource') }}",
+            headers     : {"X-CSRFToken" : "{{ csrf_token() }}"},
+            data        : JSON.stringify({id : _id}),
+            contentType : "application/json"
+        }).done(function() {
+            window.location.reload();
+            alert('삭제 성공!');
+        }).fail(function() {
+            alert('삭제 실패..')
+        })
     }
 </script>
 {% endblock %}
@@ -68,7 +86,7 @@
         </button>
     </div>
 </div>
-<div id="post-box" class="row mx-1 my-3 py-4 border border-info rounded-lg shadow-sm " style="display: none">
+<div id="post-box" class="row mx-1 my-3 py-4 rounded-lg shadow-sm " style="display: none">
     <form method="POST" class="form-inline mx-auto">
         <div class="form-group">
             <label for="boardName" class="font-weight-bold mr-sm-3" required>게시판 이름 :</label>

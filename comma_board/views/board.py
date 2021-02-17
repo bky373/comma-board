@@ -64,9 +64,7 @@ class BoardResource(Resource):
 
     def delete(self):
         args = parser.parse_args()
-        _id = args.id
-
-        board = Board.query.filter_by(id = _id).first()
+        board = Board.query.filter_by(id = args.id).first()
         if not board:
             abort(400, description = '해당 게시판을 찾을 수 없습니다')
 
